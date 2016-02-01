@@ -1,0 +1,79 @@
+#!/bin/bash -ex
+
+SYSFS='/sys/class/gpio'
+BASE=
+
+function gpiochip_base() {
+    bases="$( ls $SYSFS | grep gpiochip )"
+    if [ -z "$1" ]; then # no chipnum specified
+        BASE=$( echo $bases | cut -d' ' -f1 )
+    else
+        BASE=$( echo $bases | egrep -o ".*$1" )
+    fi
+    BASE=$( echo $BASE | egrep -o "[0-9]+" )
+}
+
+# call at import to set default gpiochip $BASE
+gpiochip_base
+
+function exp() {
+    gi=$(( $BASE + $1 ))
+    if [ ! -d $SYSFS/gpio${gi} ]; then
+        echo $(( $BASE + $1 )) > $SYSFS/export
+    fi
+}
+
+function direction() {
+    exp $1
+    gi=$(( $BASE + $1 ))
+    echo $2 > $SYSFS/gpio${gi}/direction
+}
+
+function value() {
+    gi=$(( $BASE + $1 ))
+    if [ -z "$2" ]; then
+        cat $SYSFS/gpio${gi}/value
+    else
+        echo $2 > $SYSFS/gpio${gi}/value
+    fi
+}
+
+function input() {
+    direction $1 'in'
+}
+
+function output() {
+    direction $1 'out'
+}
+
+function lo() {
+    value $1 0
+}
+
+function hi() {
+    value $1 1
+}
+
+function poll() {
+    pin=$1
+    cmd=$2
+
+    exp $pin
+    input $pin
+
+    last=$( value $pin )
+
+
+    while true; do
+        val=$( value $pin )
+        if [ $val != $last ]; then
+            if [ ! -z "$cmd" ]; then
+                $cmd $val
+            else
+            echo "Changed to $val"
+            fi
+            last=$val
+        fi
+        sleep 0.2
+    done
+}
