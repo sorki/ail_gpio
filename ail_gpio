@@ -54,6 +54,21 @@ function hi() {
     value $1 1
 }
 
+function toggle() {
+    cval=$( value $1 )
+    if [ $cval == "0" ]; then
+      hi $1
+    else
+      lo $1
+    fi
+}
+
+function togglerising() {
+    if [ $2 == "1" ]; then
+        toggle $1
+    fi
+}
+
 function poll() {
     pin=$1
     cmd=$2
