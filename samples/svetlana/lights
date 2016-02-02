@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source ail_gpio
+
+poll 17 "./lights_toggle"

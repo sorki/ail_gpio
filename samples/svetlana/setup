@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source ail_gpio
+
+output 4 # right light
+output 23 # left light
+
+input 17 # light switch
+
+input 8 # reset swich
+output 7 # reset switch input
+lo 7 # needs to be low
+
+output 24 # power led
+output 25 # hdd led
+

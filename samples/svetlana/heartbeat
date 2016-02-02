@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source ail_gpio
+
+lo 24
+
+while true; do
+    toggle 24
+    toggle 24
+    sleep 1
+done

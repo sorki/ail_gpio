@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source ail_gpio
+
+# rising
+if [ $1 == "1" ]; then
+  toggle 4
+  toggle 23
+fi
