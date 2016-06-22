@@ -39,28 +39,38 @@ function value() {
 }
 
 function input() {
-    direction $1 'in'
+    for pin in "$@"; do
+        direction $pin 'in'
+    done
 }
 
 function output() {
-    direction $1 'out'
+    for pin in "$@"; do
+        direction $pin 'out'
+    done
 }
 
 function lo() {
-    value $1 0
+    for pin in "$@"; do
+        value $pin 0
+    done
 }
 
 function hi() {
-    value $1 1
+    for pin in "$@"; do
+        value $pin 1
+    done
 }
 
 function toggle() {
-    cval=$( value $1 )
-    if [ $cval == "0" ]; then
-      hi $1
-    else
-      lo $1
-    fi
+    for pin in "$@"; do
+        cval=$( value $pin )
+        if [ $cval == "0" ]; then
+          hi $pin
+        else
+          lo $pin
+        fi
+    done
 }
 
 function togglerising() {

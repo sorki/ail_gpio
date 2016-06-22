@@ -17,6 +17,9 @@ Clone and test::
         lo 4
         hi 4
 
+        toggle 4
+        echo "State of pin 4 is $( value 4 )"
+
         input 4
         value 4
         poll 4
@@ -24,3 +27,9 @@ Clone and test::
         # poll can take additional parameter - a script to be called when
         # change occurs
         poll 4 handle
+
+        # you can pass multiple pins to output, input, lo, hi and toggle
+        pins="4 5 6"
+        output $pins
+        lo $pins
+        toggle $pins
