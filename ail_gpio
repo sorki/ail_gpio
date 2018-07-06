@@ -8,7 +8,7 @@ function gpiochip_base() {
     if [ -z "$1" ]; then # no chipnum specified
         BASE=$( echo $bases | cut -d' ' -f1 )
     else
-        BASE=$( echo $bases | egrep -o ".*$1" )
+        BASE=$( echo $bases | egrep -o "gpiochip$1" )
     fi
     BASE=$( echo $BASE | egrep -o "[0-9]+" )
 }
